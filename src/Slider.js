@@ -187,10 +187,12 @@ export default class Slider extends PureComponent {
     trackSize: { width: 0, height: 0 },
     thumbSize: { width: 0, height: 0 },
     allMeasured: false,
+    rawValue: this.props.value,
     value: new Animated.Value(this.props.value),
+    animateTransitions: this.props.animateTransitions,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
       onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
@@ -200,18 +202,21 @@ export default class Slider extends PureComponent {
       onPanResponderTerminationRequest: this._handlePanResponderRequestEnd,
       onPanResponderTerminate: this._handlePanResponderEnd,
     });
+
+    if (state.animateTransitions) {
+      this._setCurrentValueAnimated(state.rawValue);
+    } else {
+      this._setCurrentValue(state.rawValue);
+    }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const newValue = nextProps.value;
-
-    if (this.props.value !== newValue) {
-      if (this.props.animateTransitions) {
-        this._setCurrentValueAnimated(newValue);
-      } else {
-        this._setCurrentValue(newValue);
+  static static getDerivedStateFromProps(props, state) {
+    if (props.value !== state.value.getValue()) {
+      return {
+        rawValue: props.value
       }
     }
+    return null;
   }
 
   render() {
