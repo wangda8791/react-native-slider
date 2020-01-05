@@ -210,7 +210,7 @@ export default class Slider extends PureComponent {
     }
   }
 
-  static static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props, state) {
     if (props.value !== state.value.getValue()) {
       return {
         rawValue: props.value
