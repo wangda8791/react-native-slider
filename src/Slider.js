@@ -1,17 +1,6 @@
-import React, { PureComponent } from 'react';
-
-import {
-  Animated,
-  Image,
-  StyleSheet,
-  PanResponder,
-  View,
-  Easing,
-  ViewPropTypes,
-  I18nManager,
-} from 'react-native';
-
 import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import { Animated, Easing, I18nManager, Image, PanResponder, StyleSheet, View, ViewPropTypes } from 'react-native';
 
 const TRACK_SIZE = 4;
 const THUMB_SIZE = 20;
@@ -211,7 +200,7 @@ export default class Slider extends PureComponent {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.value !== state.value.getValue()) {
+    if (props.value !== state.rawValue) {
       return {
         rawValue: props.value
       }
@@ -456,6 +445,7 @@ export default class Slider extends PureComponent {
   _getCurrentValue = () => this.state.value.__getValue();
 
   _setCurrentValue = (value: number) => {
+    this.setState({ rawValue: value });
     this.state.value.setValue(value);
   };
 
