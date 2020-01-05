@@ -181,7 +181,9 @@ export default class Slider extends PureComponent {
     animateTransitions: this.props.animateTransitions,
   };
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
       onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
@@ -191,7 +193,9 @@ export default class Slider extends PureComponent {
       onPanResponderTerminationRequest: this._handlePanResponderRequestEnd,
       onPanResponderTerminate: this._handlePanResponderEnd,
     });
-
+  }
+  
+  componentDidMount() {
     if (state.animateTransitions) {
       this._setCurrentValueAnimated(state.rawValue);
     } else {
