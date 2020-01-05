@@ -194,12 +194,12 @@ export default class Slider extends PureComponent {
       onPanResponderTerminate: this._handlePanResponderEnd,
     });
   }
-  
+
   componentDidMount() {
-    if (state.animateTransitions) {
-      this._setCurrentValueAnimated(state.rawValue);
+    if (this.state.animateTransitions) {
+      this._setCurrentValueAnimated(this.state.rawValue);
     } else {
-      this._setCurrentValue(state.rawValue);
+      this._setCurrentValue(this.state.rawValue);
     }
   }
 
