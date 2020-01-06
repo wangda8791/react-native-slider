@@ -176,7 +176,6 @@ export default class Slider extends PureComponent {
     trackSize: { width: 0, height: 0 },
     thumbSize: { width: 0, height: 0 },
     allMeasured: false,
-    rawValue: this.props.value,
     value: new Animated.Value(this.props.value),
     animateTransitions: this.props.animateTransitions,
   };
@@ -193,20 +192,18 @@ export default class Slider extends PureComponent {
       onPanResponderTerminationRequest: this._handlePanResponderRequestEnd,
       onPanResponderTerminate: this._handlePanResponderEnd,
     });
-  }
 
-  componentDidMount() {
     if (this.state.animateTransitions) {
-      this._setCurrentValueAnimated(this.state.rawValue);
+      this._setCurrentValueAnimated(this._getCurrentValue());
     } else {
-      this._setCurrentValue(this.state.rawValue);
+      this._setCurrentValue(this._getCurrentValue());
     }
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.value !== state.rawValue) {
+    if (props.value !== state.value.__getValue()) {
       return {
-        rawValue: props.value
+        value: new Animated.Value(props.value)
       }
     }
     return null;
@@ -449,7 +446,6 @@ export default class Slider extends PureComponent {
   _getCurrentValue = () => this.state.value.__getValue();
 
   _setCurrentValue = (value: number) => {
-    this.setState({ rawValue: value });
     this.state.value.setValue(value);
   };
 
